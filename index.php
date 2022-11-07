@@ -46,6 +46,6 @@
         </main>
         
         <script src="Jquery.js"></script>
-        <script src="OX.js"></script>
+        <script src="index.js"></script>
     </body>
 </html>
