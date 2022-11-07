@@ -19,7 +19,8 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (
 $('#arnold').click(()=>{
 
      $.each(arnold_press, (k,v)=>{
-        console.log(arnold_press[k]());
+        // arnold_press[k];
+        arnold_press.key;
      })
 })
 
@@ -96,23 +97,24 @@ function check_pose(pose) {
     // 나머지 실패
     // 퍼센트로만
     $.each(data, (k,v) => {
-        let data_nose = JSON.parse(`[${v.bones.nose}]`);
-        let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
-        let data_right_eye = JSON.parse(`[${v.bones.right_eye}]`);
-        let data_left_ear = JSON.parse(`[${v.bones.left_ear}]`);
-        let data_right_ear = JSON.parse(`[${v.bones.right_ear}]`);
-        let data_left_shoulder = JSON.parse(`[${v.bones.left_shoulder}]`);
-        let data_right_shoulder = JSON.parse(`[${v.bones.right_shoulder}]`);
-        let data_left_elbow = JSON.parse(`[${v.bones.left_elbow}]`);
-        let data_right_elbow = JSON.parse(`[${v.bones.right_elbow}]`);
-        let data_left_wrist = JSON.parse(`[${v.bones.left_wrist}]`);
-        let data_right_wrist = JSON.parse(`[${v.bones.right_wrist}]`);
-        let data_left_hip = JSON.parse(`[${v.bones.left_hip}]`);
-        let data_right_hip = JSON.parse(`[${v.bones.right_hip}]`);
-        let data_left_knee = JSON.parse(`[${v.bones.left_knee}]`);
-        let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
-        let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
-        let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
+        // console.log(v);
+        // let data_nose = JSON.parse(`[${v.bones.nose}]`);
+        // let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
+        // let data_right_eye = JSON.parse(`[${v.bones.right_eye}]`);
+        // let data_left_ear = JSON.parse(`[${v.bones.left_ear}]`);
+        // let data_right_ear = JSON.parse(`[${v.bones.right_ear}]`);
+        // let data_left_shoulder = JSON.parse(`[${v.bones.left_shoulder}]`);
+        // let data_right_shoulder = JSON.parse(`[${v.bones.right_shoulder}]`);
+        // let data_left_elbow = JSON.parse(`[${v.bones.left_elbow}]`);
+        // let data_right_elbow = JSON.parse(`[${v.bones.right_elbow}]`);
+        // let data_left_wrist = JSON.parse(`[${v.bones.left_wrist}]`);
+        // let data_right_wrist = JSON.parse(`[${v.bones.right_wrist}]`);
+        // let data_left_hip = JSON.parse(`[${v.bones.left_hip}]`);
+        // let data_right_hip = JSON.parse(`[${v.bones.right_hip}]`);
+        // let data_left_knee = JSON.parse(`[${v.bones.left_knee}]`);
+        // let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
+        // let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
+        // let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
 
         //준비동작일 때
         if(v.status == 'ready'){
@@ -127,102 +129,17 @@ function check_pose(pose) {
 
 
 const arnold_press = {
-    a : () => {
-        let arnold_press_a = [];
-        console.log(arnold_press_a);
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_a/${i}/Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-        
-        
-    },
-
-    b1 : () => {
-        let arnold_press_b1 = [];
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_b1[`Arnold_press_b1_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_b1/${i}/Arnold_press_b1_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_b1[`Arnold_press_b1_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-        
-        
-    },
-
-    b2 : () => {
-        let arnold_press_b2 = [];
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_b2[`Arnold_press_b2_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_b2/${i}/Arnold_press_b2_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_b2[`Arnold_press_b2_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-        
-        
-    },
-
-    c : () => {
-        let arnold_press_c = [];
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_c[`Arnold_press_C_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_C/${i}/Arnold_press_C_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_c[`Arnold_press_C_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-        
-        
-    },
-
-    d : () => {
-        let arnold_press_d = [];
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_d[`Arnold_press_d_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_d/${i}/Arnold_press_d_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_d[`Arnold_press_d_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-        
-        
-    },
-
-    e : () => {
-        let arnold_press_e = [];
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_e[`Arnold_press_e_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_e/${i}/Arnold_press_e_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_e[`Arnold_press_e_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-        
-        
-    },
-
-    key : ()=> {
-        let arnold_press_key = [];
-        console.log(arnold_press_key);
-        for(let i=1; i<6; i++){
-            for(let i2=1; i2<58; i2++){
-                arnold_press_key[`Arnold_press_key_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_key/${i}/Arnold_press_key_cam${i}_${('0' + i2).slice(-2)}.json`;
-                exercise_data(arnold_press_key[`Arnold_press_key_cam${i}_${('0' + i2).slice(-2)}`]);
-            }
-        }
-    },
-
+    a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
+    b1 : set_exercise(58,'Arnold_press_B1_cam','./json/arnold_press/Arnold_press_b1/'),
+    b2 : set_exercise(58,'Arnold_press_B2_cam','./json/arnold_press/Arnold_press_b2/'),
+    c : set_exercise(58,'Arnold_press_C_cam','./json/arnold_press/Arnold_press_c/'),
+    d : set_exercise(57,'Arnold_press_D_cam','./json/arnold_press/Arnold_press_d/'),
+    e : set_exercise(58,'Arnold_press_E_cam','./json/arnold_press/Arnold_press_e/'),
+    key : set_exercise(58,'Arnold_press_KEY_cam','./json/arnold_press/Arnold_press_key/')
 }
-// function arnold_press_a(){
-//     let arnold_press_a = [];
-//     for(let i=1; i<6; i++){
-//         for(let i2=1; i2<58; i2++){
-//             arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_a/${i}/Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}.json`;
-//             exercise_data(arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`]);
-//         }
-//     }
-    
+
 //     async function exercise_data(link) { 
-//         let data = await set_exercise(link); 
+//         let data = await json_reader(link); 
 //         //준비
 //         if(data.frame <= 11 || 45 > data.frame <= 57){
 //             data.status = 'ready';
@@ -236,27 +153,59 @@ const arnold_press = {
 //         json_data.push(data);
 //       };
 // }
-
-
-function set_exercise(link) {
-    // 반환값을 받을 Promise 객체 생성
-    return new Promise(function (receive) {
-        fetch(link) // json 파일 읽어오기
-        .then(function (res) {
-            return res.json(); // 읽어온 데이터를 json으로 변환
-        })
-        .then(function (data) { 
-            // $('.main_section h1').text($('.main_section h1').text()+data.info.name);
-            // $('.e_point').text($('.e_point').text()+data.info.e_point);
-            // $('.desc').text($('.desc').text()+data.info.desc);
-            receive(data.info); // json파일을 텍스트로
-        });
-    });
+/**
+ * json 파일 세팅
+ *
+ * @param   {[string]}  file    파일 개수
+ * @param   {[string]}  name    배열명(숫자 제외한 파일 명)
+ * @param   {[string]}  url     파일 경로(숫자 폴더 이전 경로 까지만)
+ *
+ */
+function set_exercise(file,name,url){
+    let exer_arr = [];
+    //i 캠 개수 5개
+    for(let i=1; i<6; i++){
+        for(let i2=1; i2<file; i2++){
+            exer_arr[`${name+i}_${('0' + i2).slice(-2)}`] = `${url+i}/${name+i}_${('0' + i2).slice(-2)}.json`;
+            json_reader(exer_arr[`${name+i}_${('0' + i2).slice(-2)}`]);
+        }
+    }
 }
-async function exercise_data(link) { 
-    let data = await set_exercise(link); 
-    json_data.push(data);
-};
+
+function json_reader(link) {
+    $.ajax({
+        // async: false,
+        url: link,
+    }).done((data)=>{
+        //전역변수 json_data 배열에 push
+        json_data.push(data);
+    }).fail((a,b,c)=>{console.log(a,b,c)
+    })
+}
+// async function exercise_data(link) { 
+//     let data = await json_reader(link); 
+//     json_data.push(data);
+// };
+
+// function json_reader(link) {
+//     // 반환값을 받을 Promise 객체 생성
+//     return new Promise(function (receive) {
+//         fetch(link) // json 파일 읽어오기
+//         .then(function (res) {
+//             return res.json(); // 읽어온 데이터를 json으로 변환
+//         })
+//         .then(function (data) { 
+//             // $('.main_section h1').text($('.main_section h1').text()+data.info.name);
+//             // $('.e_point').text($('.e_point').text()+data.info.e_point);
+//             // $('.desc').text($('.desc').text()+data.info.desc);
+//             receive(data.info); // json파일을 텍스트로
+//         });
+//     });
+// }
+// async function exercise_data(link) { 
+//     let data = await json_reader(link); 
+//     json_data.push(data);
+// };
 
 /* PoseNet을 쓰면서 사용하는 함수들 코드 - 그냥 복사해서 쓰기 */
 //tensorflow에서 제공하는 js 파트
