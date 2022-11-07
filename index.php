@@ -40,6 +40,7 @@
                     <video id="video" width="960" height="540" autoplay muted playsinline></video>
                     <canvas id="canvas"></canvas>
                     <span class="status"></span>
+                    <button id="arnold">아놀드프레스</button>
                 </article>
             </section>
         </main>

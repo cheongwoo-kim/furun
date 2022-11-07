@@ -1,8 +1,10 @@
 
 $(()=>{
-    arnold_press();
-})
 
+})
+// console.log(arnold_press);
+
+// console.log(json_data);
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
@@ -14,6 +16,12 @@ let result_message = "";
 navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (stream) {
     video.srcObject = stream;
 });
+$('#arnold').click(()=>{
+
+     $.each(arnold_press, (k,v)=>{
+        console.log(arnold_press[k]());
+     })
+})
 
 posenet.load().then((model) => {
     // 이곳의 model과 아래 predict의 model은 같아야 한다.
@@ -65,6 +73,7 @@ let count_time = setInterval(function () {
 //실시간 좌표와 json의 좌표값 비교
 function check_pose(pose) {
     let data = json_data;
+    // console.log(data);
     //목, 손바닥, 등, 허리 발바닥 좌표 없음
     let nose = pose.keypoints[0].position; //머리(코)
     let left_eye = pose.keypoints[1].position; //머리(왼쪽 눈)
@@ -83,7 +92,9 @@ function check_pose(pose) {
     let right_knee = pose.keypoints[14].position; //다리(무릎)
     let left_ankle = pose.keypoints[15].position; //다리(왼쪽 발목)
     let right_ankle = pose.keypoints[16].position; //다리(오른쪽 발목)
-    
+    // key 정답 
+    // 나머지 실패
+    // 퍼센트로만
     $.each(data, (k,v) => {
         let data_nose = JSON.parse(`[${v.bones.nose}]`);
         let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
@@ -102,9 +113,10 @@ function check_pose(pose) {
         let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
         let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
         let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
+
+        //준비동작일 때
         if(v.status == 'ready'){
             if(parseInt(data_left_shoulder[0]) == parseInt(left_shoulder['x'])){
-                $('.status').text('준비동작 x축 일치');
                 
             }
         }
@@ -112,34 +124,118 @@ function check_pose(pose) {
 
 
 }
-function arnold_press(){
-    let arnold_press_a = [];
-    for(let i=1; i<6; i++){
-        for(let i2=1; i2<58; i2++){
-            arnold_press_a[`Arnold_press_A_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_A/${i}/Arnold_press_A_cam${i}_${('0' + i2).slice(-2)}.json`;
-            exercise_data(arnold_press_a[`Arnold_press_A_cam${i}_${('0' + i2).slice(-2)}`]);
+
+
+const arnold_press = {
+    a : () => {
+        let arnold_press_a = [];
+        console.log(arnold_press_a);
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_a/${i}/Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
         }
-    }
-    
-    async function exercise_data(link) { 
-        let data = await set_exercise(link); 
-        //준비
-        if(data.frame <= 11 || 45 > data.frame <= 57){
-            data.status = 'ready';
-            console.log();
-            // console.log(data.bones.left_shoulder);
-        //실행중
-        } else if(11 > data.frame <= 21 || 30 > data.frame <= 45){
-            data.status = 'set';
-        //실행
-        } else if(21 > data.frame <= 30){
-            data.status = 'go';
-        }
-        json_data.push(data);
         
-        // $('#json_data').val($('#json_data').val() + JSON.stringify(data));
-      };
+        
+    },
+
+    b1 : () => {
+        let arnold_press_b1 = [];
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_b1[`Arnold_press_b1_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_b1/${i}/Arnold_press_b1_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_b1[`Arnold_press_b1_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
+        }
+        
+        
+    },
+
+    b2 : () => {
+        let arnold_press_b2 = [];
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_b2[`Arnold_press_b2_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_b2/${i}/Arnold_press_b2_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_b2[`Arnold_press_b2_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
+        }
+        
+        
+    },
+
+    c : () => {
+        let arnold_press_c = [];
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_c[`Arnold_press_C_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_C/${i}/Arnold_press_C_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_c[`Arnold_press_C_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
+        }
+        
+        
+    },
+
+    d : () => {
+        let arnold_press_d = [];
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_d[`Arnold_press_d_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_d/${i}/Arnold_press_d_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_d[`Arnold_press_d_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
+        }
+        
+        
+    },
+
+    e : () => {
+        let arnold_press_e = [];
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_e[`Arnold_press_e_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_e/${i}/Arnold_press_e_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_e[`Arnold_press_e_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
+        }
+        
+        
+    },
+
+    key : ()=> {
+        let arnold_press_key = [];
+        console.log(arnold_press_key);
+        for(let i=1; i<6; i++){
+            for(let i2=1; i2<58; i2++){
+                arnold_press_key[`Arnold_press_key_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_key/${i}/Arnold_press_key_cam${i}_${('0' + i2).slice(-2)}.json`;
+                exercise_data(arnold_press_key[`Arnold_press_key_cam${i}_${('0' + i2).slice(-2)}`]);
+            }
+        }
+    },
+
 }
+// function arnold_press_a(){
+//     let arnold_press_a = [];
+//     for(let i=1; i<6; i++){
+//         for(let i2=1; i2<58; i2++){
+//             arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`] = `./json/arnold_press/Arnold_press_a/${i}/Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}.json`;
+//             exercise_data(arnold_press_a[`Arnold_press_a_cam${i}_${('0' + i2).slice(-2)}`]);
+//         }
+//     }
+    
+//     async function exercise_data(link) { 
+//         let data = await set_exercise(link); 
+//         //준비
+//         if(data.frame <= 11 || 45 > data.frame <= 57){
+//             data.status = 'ready';
+//         //실행중
+//         } else if(11 > data.frame <= 21 || 30 > data.frame <= 45){
+//             data.status = 'set';
+//         //실행
+//         } else if(21 > data.frame <= 30){
+//             data.status = 'go';
+//         }
+//         json_data.push(data);
+//       };
+// }
 
 
 function set_exercise(link) {
@@ -157,7 +253,10 @@ function set_exercise(link) {
         });
     });
 }
-
+async function exercise_data(link) { 
+    let data = await set_exercise(link); 
+    json_data.push(data);
+};
 
 /* PoseNet을 쓰면서 사용하는 함수들 코드 - 그냥 복사해서 쓰기 */
 //tensorflow에서 제공하는 js 파트
