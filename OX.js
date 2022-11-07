@@ -17,10 +17,8 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (
     video.srcObject = stream;
 });
 $('#arnold').click(()=>{
-
      $.each(arnold_press, (k,v)=>{
-        // arnold_press[k];
-        arnold_press.key;
+        arnold_press[k];
      })
 })
 
@@ -73,8 +71,6 @@ let count_time = setInterval(function () {
 
 //실시간 좌표와 json의 좌표값 비교
 function check_pose(pose) {
-    let data = json_data;
-    // console.log(data);
     //목, 손바닥, 등, 허리 발바닥 좌표 없음
     let nose = pose.keypoints[0].position; //머리(코)
     let left_eye = pose.keypoints[1].position; //머리(왼쪽 눈)
@@ -93,40 +89,17 @@ function check_pose(pose) {
     let right_knee = pose.keypoints[14].position; //다리(무릎)
     let left_ankle = pose.keypoints[15].position; //다리(왼쪽 발목)
     let right_ankle = pose.keypoints[16].position; //다리(오른쪽 발목)
-    // key 정답 
-    // 나머지 실패
-    // 퍼센트로만
-    $.each(data, (k,v) => {
-        // console.log(v);
-        // let data_nose = JSON.parse(`[${v.bones.nose}]`);
-        // let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
-        // let data_right_eye = JSON.parse(`[${v.bones.right_eye}]`);
-        // let data_left_ear = JSON.parse(`[${v.bones.left_ear}]`);
-        // let data_right_ear = JSON.parse(`[${v.bones.right_ear}]`);
-        // let data_left_shoulder = JSON.parse(`[${v.bones.left_shoulder}]`);
-        // let data_right_shoulder = JSON.parse(`[${v.bones.right_shoulder}]`);
-        // let data_left_elbow = JSON.parse(`[${v.bones.left_elbow}]`);
-        // let data_right_elbow = JSON.parse(`[${v.bones.right_elbow}]`);
-        // let data_left_wrist = JSON.parse(`[${v.bones.left_wrist}]`);
-        // let data_right_wrist = JSON.parse(`[${v.bones.right_wrist}]`);
-        // let data_left_hip = JSON.parse(`[${v.bones.left_hip}]`);
-        // let data_right_hip = JSON.parse(`[${v.bones.right_hip}]`);
-        // let data_left_knee = JSON.parse(`[${v.bones.left_knee}]`);
-        // let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
-        // let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
-        // let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
-
-        //준비동작일 때
-        if(v.status == 'ready'){
-            if(parseInt(data_left_shoulder[0]) == parseInt(left_shoulder['x'])){
-                
-            }
-        }
-    })
-
 
 }
-
+// const conditions = {
+//     a : $.each(json_data, (k,v) => {}),
+//     b1 : $.each(json_data, (k,v) => {}),
+//     b2 : $.each(json_data, (k,v) => {}),
+//     c : $.each(json_data, (k,v) => {}),
+//     d : $.each(json_data, (k,v) => {}),
+//     e : $.each(json_data, (k,v) => {}),
+//     key : $.each(json_data, (k,v) => {})
+// }
 
 const arnold_press = {
     a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
@@ -174,12 +147,175 @@ function set_exercise(file,name,url){
 
 function json_reader(link) {
     $.ajax({
-        // async: false,
+        async: false,
         url: link,
     }).done((data)=>{
         //전역변수 json_data 배열에 push
-        json_data.push(data);
-    }).fail((a,b,c)=>{console.log(a,b,c)
+        // json_data.push(data);
+        $.each(data, (k,v) => {
+        let data_nose = v.bones.nose;
+        let data_left_eye = v.bones.left_eye;
+        let data_right_eye = v.bones.right_eye;
+        let data_left_ear = v.bones.left_ear;
+        let data_right_ear = v.bones.right_ear;
+        let data_left_shoulder = v.bones.left_shoulder;
+        let data_right_shoulder = v.bones.right_shoulder;
+        let data_left_elbow = v.bones.left_elbow;
+        let data_right_elbow = v.bones.right_elbow;
+        let data_left_wrist = v.bones.left_wrist;
+        let data_right_wrist = v.bones.right_wrist;
+        let data_left_hip = v.bones.left_hip;
+        let data_right_hip = v.bones.right_hip;
+        let data_left_knee = v.bones.left_knee;
+        let data_right_knee = v.bones.right_knee;
+        let data_left_ankle = v.bones.left_ankle;
+        let data_right_ankle = v.bones.right_ankle;
+        let total = [];
+        console.log(data_right_ankle);
+        if(v.conditions == 'KEY'){
+            total[0] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+            data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+            data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+            data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+            data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+            data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+            data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+            data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+            data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+            data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+            data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+            data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+            data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+            data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+            data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+            data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+            data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+            data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            console.log(total);
+        } 
+        // else if(v.conditions == 'A'){
+        //    total[1] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+        //         data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+        //         data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+        //         data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+        //         data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+        //         data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+        //         data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+        //         data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+        //         data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+        //         data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+        //         data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+        //         data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+        //         data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+        //         data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+        //         data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            
+        // } else if(v.conditions == 'B1'){
+        //    total[2] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+        //         data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+        //         data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+        //         data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+        //         data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+        //         data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+        //         data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+        //         data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+        //         data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+        //         data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+        //         data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+        //         data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+        //         data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+        //         data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+        //         data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            
+        // } else if(v.conditions == 'B2'){
+        //    total[3] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+        //         data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+        //         data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+        //         data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+        //         data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+        //         data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+        //         data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+        //         data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+        //         data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+        //         data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+        //         data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+        //         data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+        //         data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+        //         data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+        //         data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            
+        // } else if(v.conditions == 'C'){
+        //    total[4] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+        //         data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+        //         data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+        //         data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+        //         data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+        //         data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+        //         data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+        //         data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+        //         data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+        //         data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+        //         data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+        //         data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+        //         data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+        //         data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+        //         data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            
+        // } else if(v.conditions == 'D'){
+        //    total[5] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+        //         data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+        //         data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+        //         data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+        //         data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+        //         data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+        //         data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+        //         data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+        //         data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+        //         data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+        //         data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+        //         data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+        //         data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+        //         data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+        //         data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            
+        // } else if(v.conditions == 'E'){
+        //    total[6] = data_nose[0].toFixed(2) + data_nose[1].toFixed(2) + 
+        //         data_left_eye[0].toFixed(2) + data_left_eye[1].toFixed(2) +
+        //         data_right_eye[0].toFixed(2) + data_right_eye[1].toFixed(2) +
+        //         data_left_ear[0].toFixed(2) + data_left_ear[1].toFixed(2) +
+        //         data_right_ear[0].toFixed(2) + data_right_ear[1].toFixed(2) +
+        //         data_left_shoulder[0].toFixed(2) + data_left_shoulder[1].toFixed(2) +
+        //         data_right_shoulder[0].toFixed(2) + data_right_shoulder[1].toFixed(2) +
+        //         data_left_elbow[0].toFixed(2) + data_left_elbow[1].toFixed(2) +
+        //         data_right_elbow[0].toFixed(2) + data_right_elbow[1].toFixed(2) +
+        //         data_left_wrist[0].toFixed(2) + data_left_wrist[1].toFixed(2) +
+        //         data_right_wrist[0].toFixed(2) + data_right_wrist[1].toFixed(2) +
+        //         data_left_hip[0].toFixed(2) + data_left_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_right_hip[0].toFixed(2) + data_right_hip[1].toFixed(2) +
+        //         data_left_knee[0].toFixed(2) + data_left_knee[1].toFixed(2) +
+        //         data_right_knee[0].toFixed(2) + data_right_knee[1].toFixed(2) +
+        //         data_left_ankle[0].toFixed(2) + data_left_ankle[1].toFixed(2) +
+        //         data_right_ankle[0].toFixed(2) + data_right_ankle[1].toFixed(2)
+            
+        })
+    }).fail((a,b,c)=>{
+        console.log(a)
     })
 }
 // async function exercise_data(link) { 
