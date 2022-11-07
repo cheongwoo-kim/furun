@@ -8,7 +8,7 @@ $(()=>{
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
-let total = [];
+let total = {};
 let pose_status = 2;
 let keep_time = [0, 0, 0];
 let result_message = "";
@@ -19,6 +19,7 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (
 $('#arnold').click(()=>{
      $.each(arnold_press, (k,v)=>{
         arnold_press[k];
+        console.log(total);
      })
 })
 
@@ -71,7 +72,7 @@ let count_time = setInterval(function () {
 
 //실시간 좌표와 json의 좌표값 비교
 function check_pose(pose) {
-    console.log(total);
+    // console.log(total);
     //목, 손바닥, 등, 허리 발바닥 좌표 없음
     let nose = pose.keypoints[0].position; //머리(코)
     let left_eye = pose.keypoints[1].position; //머리(왼쪽 눈)
@@ -152,10 +153,7 @@ function json_reader(link) {
         dataType : 'Json',
         url: link,
     }).done((data)=>{
-        //전역변수 json_data 배열에 push
-        // json_data.push(data);
-        let total = [];
-        // console.log(total);
+        let sum_arr = [];
         $.each(data, (k,v) => {
             let data_nose = JSON.parse(`[${v.bones.nose}]`);
             let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
@@ -174,32 +172,36 @@ function json_reader(link) {
             let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
             let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
             let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
-            
-            //x 축 y축 모두 더하기
-            let sum = data_nose[0] + data_nose[1] + 
-            data_left_eye[0] + data_left_eye[1] +
-            data_right_eye[0] + data_right_eye[1] +
-            data_left_ear[0] + data_left_ear[1] +
-            data_right_ear[0] + data_right_ear[1] +
-            data_left_shoulder[0] + data_left_shoulder[1] +
-            data_right_shoulder[0] + data_right_shoulder[1] +
-            data_left_elbow[0] + data_left_elbow[1] +
-            data_right_elbow[0] + data_right_elbow[1] +
-            data_left_wrist[0] + data_left_wrist[1] +
-            data_right_wrist[0] + data_right_wrist[1] +
-            data_left_hip[0] + data_left_hip[1] +
-            data_right_hip[0] + data_right_hip[1] +
-            data_right_hip[0] + data_right_hip[1] +
-            data_left_knee[0] + data_left_knee[1] +
-            data_right_knee[0] + data_right_knee[1] +
-            data_left_ankle[0] + data_left_ankle[1] +
-            data_right_ankle[0] + data_right_ankle[1];
 
+            //x 축 y축 모두 더하기
+            let sum = 
+                data_nose[0] + data_nose[1] + 
+                data_left_eye[0] + data_left_eye[1] +
+                data_right_eye[0] + data_right_eye[1] +
+                data_left_ear[0] + data_left_ear[1] +
+                data_right_ear[0] + data_right_ear[1] +
+                data_left_shoulder[0] + data_left_shoulder[1] +
+                data_right_shoulder[0] + data_right_shoulder[1] +
+                data_left_elbow[0] + data_left_elbow[1] +
+                data_right_elbow[0] + data_right_elbow[1] +
+                data_left_wrist[0] + data_left_wrist[1] +
+                data_right_wrist[0] + data_right_wrist[1] +
+                data_left_hip[0] + data_left_hip[1] +
+                data_right_hip[0] + data_right_hip[1] +
+                data_right_hip[0] + data_right_hip[1] +
+                data_left_knee[0] + data_left_knee[1] +
+                data_right_knee[0] + data_right_knee[1] +
+                data_left_ankle[0] + data_left_ankle[1] +
+                data_right_ankle[0] + data_right_ankle[1]
+            sum_arr.push(sum);
+            console.log(sum_arr);
             if(v.conditions == 'KEY'){
-                total['key'] = sum
+                total.key = sum_arr
+                
+                console.log(total)
             } 
             else if(v.conditions == 'A'){
-            total['a'] = sum
+                total['a'] = sum
                 
             } else if(v.conditions == 'B1'){
                 total['b1'] = sum
@@ -216,7 +218,6 @@ function json_reader(link) {
             } else if(v.conditions == 'E'){
                 total['e'] = sum
             }
-
         }
     )
     }).fail((a,b,c)=>{
