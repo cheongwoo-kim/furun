@@ -8,7 +8,7 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const json_data = [];
 let test2 = 0;
-let total = [];
+let total = {};
 let pose_status = 2;
 let keep_time = [0, 0, 0];
 let result_message = "";
@@ -32,7 +32,7 @@ $('#arnold').click(()=>{
      $.each(arnold_press, (k,v)=>{
         arnold_press[k];
      })
-     set_poss();
+     set_poss([11,57],[21,45],30);
 })
 
 posenet.load().then((model) => {
@@ -159,8 +159,15 @@ function json_reader(link) {
     })
 }
 
-//포즈 세팅 후 3단계 동작으로 나눈 후 동작의 좌표값 평균을 구한다
-function set_poss() { 
+
+/**
+ * 포즈 세팅 후 3단계 동작으로 나눈 후 동작의 좌표값 평균을 구한다
+ *
+ * @return  {[array]}  ready 준비 자세 프레임 
+ * @return  {[array]}  set 실행중 자세 프레임
+ * @return  {[int]}  go 실행 자세 프레임
+ */
+function set_poss(ready,set,go) { 
     $.each(json_data, (k,v) => {
         let data_nose = JSON.parse(`[${v.bones.nose}]`);
         let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
@@ -180,47 +187,66 @@ function set_poss() {
         let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
         let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
 
-        //x 축 y축 모두 더하기
-        let sum = 
-            data_nose[0] + data_nose[1] + 
-            data_left_eye[0] + data_left_eye[1] +
-            data_right_eye[0] + data_right_eye[1] +
-            data_left_ear[0] + data_left_ear[1] +
-            data_right_ear[0] + data_right_ear[1] +
-            data_left_shoulder[0] + data_left_shoulder[1] +
-            data_right_shoulder[0] + data_right_shoulder[1] +
-            data_left_elbow[0] + data_left_elbow[1] +
-            data_right_elbow[0] + data_right_elbow[1] +
-            data_left_wrist[0] + data_left_wrist[1] +
-            data_right_wrist[0] + data_right_wrist[1] +
-            data_left_hip[0] + data_left_hip[1] +
-            data_right_hip[0] + data_right_hip[1] +
-            data_right_hip[0] + data_right_hip[1] +
-            data_left_knee[0] + data_left_knee[1] +
-            data_right_knee[0] + data_right_knee[1] +
-            data_left_ankle[0] + data_left_ankle[1] +
-            data_right_ankle[0] + data_right_ankle[1];
-
+       
+        let sum_arr = [];
+        
+         //x 축 y축 모두 더하기
+        let sum = data_nose[0] + data_nose[1] + 
+        data_left_eye[0] + data_left_eye[1] +
+        data_right_eye[0] + data_right_eye[1] +
+        data_left_ear[0] + data_left_ear[1] +
+        data_right_ear[0] + data_right_ear[1] +
+        data_left_shoulder[0] + data_left_shoulder[1] +
+        data_right_shoulder[0] + data_right_shoulder[1] +
+        data_left_elbow[0] + data_left_elbow[1] +
+        data_right_elbow[0] + data_right_elbow[1] +
+        data_left_wrist[0] + data_left_wrist[1] +
+        data_right_wrist[0] + data_right_wrist[1] +
+        data_left_hip[0] + data_left_hip[1] +
+        data_right_hip[0] + data_right_hip[1] +
+        data_right_hip[0] + data_right_hip[1] +
+        data_left_knee[0] + data_left_knee[1] +
+        data_right_knee[0] + data_right_knee[1] +
+        data_left_ankle[0] + data_left_ankle[1] +
+        data_right_ankle[0] + data_right_ankle[1];
+        
+        
+        let sum_ready = 0;
+        let sum_set = 0;
+        let sum_go = 0;
         if(v.conditions == 'KEY'){
             //준비
-            if(v.frame <= 11 || 45 > v.frame <= 57){
-                v.status = 'ready';
-                let test = sum;
-
-                for(let i = 0; i < sum.length; i++){
-                    test2 += sum[i]
-                    console.log(sum[i]);
+            if(v.frame <= ready[0] || set[1] > v.frame <= ready[1]){
+                sum_arr.push(sum);
+                //배열에 담기(length로 반복문 돌려서 평균 구하기 위해)
+                for(let i = 0; i < sum_arr.length; i++){
+                    
+                    sum_ready += sum_arr[i];
                 }
-                
-                total.push(test2);
-            //실행중
-            } else if(11 > v.frame <= 21 || 30 > v.frame <= 45){
-                v.status = 'set';
-            //실행
-            } else if(21 > v.frame <= 30){
-                v.status = 'go';
             }
-            
+
+            //실행중
+            if(ready[0] > v.frame <= set[0] || go > v.frame <= set[1]){
+                sum_arr.push(sum);
+                for(let i = 0; i < sum_arr.length; i++){
+                    
+                    sum_set += sum_arr[i];
+                }
+            }
+
+            //실행
+            if(set[0] > v.frame <= go){
+                sum_arr.push(sum);
+                for(let i = 0; i < sum_arr.length; i++){
+                    sum_go += sum_arr[i];
+                }
+
+            }
+            total.key = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
         } 
         else if(v.conditions == 'A'){
             total['a'] = sum
