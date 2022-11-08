@@ -7,11 +7,7 @@ const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const json_data = [];
-let test2 = 0;
 let total = {};
-let pose_status = 2;
-let keep_time = [0, 0, 0];
-let result_message = "";
 //webcam을 enable하는 코드
 navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (stream) {
     video.srcObject = stream;
@@ -20,7 +16,7 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (
 
 //아놀드프레스
 $('#arnold').click(()=>{
-    const arnold_press = {
+    let arnold_press = {
         a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
         b1 : set_exercise(58,'Arnold_press_B1_cam','./json/arnold_press/Arnold_press_b1/'),
         b2 : set_exercise(58,'Arnold_press_B2_cam','./json/arnold_press/Arnold_press_b2/'),
@@ -33,6 +29,9 @@ $('#arnold').click(()=>{
         arnold_press[k];
      })
      set_poss([11,57],[21,45],30);
+     $('.e_point').text(json_data[0]['e_point']);
+     $('.e_name').text(json_data[0]['name'])
+     $('.e_desc').text(json_data[0]['desc'])
 })
 
 posenet.load().then((model) => {
@@ -55,41 +54,10 @@ posenet.load().then((model) => {
         requestAnimationFrame(predict); //frame이 들어올 때마다 재귀호출
     }
 });
-/* Timer */
-let count_time = setInterval(function () {
-    if (keep_time[pose_status] == 0) {
-        //다른 모션에서 바뀌어 들어옴
-        keep_time[0] = keep_time[1] = keep_time[2] = 0;
-        keep_time[pose_status]++;
-    } else {
-        if (pose_status == 0)
-            window.parent.postMessage({message: `O를 ${keep_time[pose_status]}초 유지하셨습니다.`}, "*");
-        else if (pose_status == 1)
-            window.parent.postMessage({message: `X를 ${keep_time[pose_status]}초 유지하셨습니다.`}, "*");
-        else if (pose_status == 2) window.parent.postMessage({message: `포즈를 취해주세요.`}, "*");
-
-        if (pose_status != 2 && keep_time[pose_status] == 5) {
-            if (pose_status == 0) {
-                result_message = "O";
-            } else {
-                result_message = "X";
-            }
-            clearInterval(count_time);
-            window.parent.postMessage({message: result_message}, "*");
-        }
-        keep_time[pose_status]++; //시간은 항상 세고 있다.
-    }
-}, 1000);
-
 
 //실시간 좌표와 json의 좌표값 비교
 function check_pose(pose) {
     //목, 손바닥, 등, 허리 발바닥 좌표 없음
-    let nose = pose.keypoints[0].position; //머리(코)
-    let left_eye = pose.keypoints[1].position; //머리(왼쪽 눈)
-    let right_eye = pose.keypoints[2].position; //머리(오른쪽 눈)
-    let left_ear = pose.keypoints[3].position; //머리(왼쪽 귀)
-    let right_ear = pose.keypoints[4].position; //머리(오른쪽 귀)
     let left_shoulder = pose.keypoints[5].position; //몸(왼쪽 어깨)
     let right_shoulder = pose.keypoints[6].position; //몸(오른쪽 어깨)
     let left_elbow = pose.keypoints[7].position; //몸(왼쪽 팔꿈치)
@@ -104,11 +72,6 @@ function check_pose(pose) {
     let right_ankle = pose.keypoints[16].position; //다리(오른쪽 발목)
 
     let sum = 
-        nose['x'] + nose['y'] + 
-        left_eye['x'] + left_eye['y'] +
-        right_eye['x'] + right_eye['y'] +
-        left_ear['x'] + left_ear['y'] +
-        right_ear['x'] + right_ear['y'] +
         left_shoulder['x'] + left_shoulder['y'] +
         right_shoulder['x'] + right_shoulder['y'] +
         left_elbow['x'] + left_elbow['y'] +
@@ -117,14 +80,60 @@ function check_pose(pose) {
         right_wrist['x'] + right_wrist['y'] +
         left_hip['x'] + left_hip['y'] +
         right_hip['x'] + right_hip['y'] +
-        right_hip['x'] + right_hip['y'] +
         left_knee['x'] + left_knee['y'] +
         right_knee['x'] + right_knee['y'] +
         left_ankle['x'] + left_ankle['y'] +
         right_ankle['x'] + right_ankle['y'];
-    
-    
+        // console.log(
+        // `
+        // left_shoulder = ${left_shoulder['x'] + left_shoulder['y']} right_shoulder = ${right_shoulder['x'] + right_shoulder['y']}
+        // left_elbow = ${left_elbow['x'] + left_elbow['y']} right_elbow = ${right_elbow['x'] + right_elbow['y']}
+        // left_wrist = ${left_wrist['x'] + left_wrist['y']} right_wrist = ${right_wrist['x'] + right_wrist['y']}
+        // left_hip = ${left_hip['x'] + left_hip['y']} right_hip = ${right_hip['x'] + right_hip['y']} 
+        // left_knee = ${left_knee['x'] + left_knee['y']} right_knee = ${right_knee['x'] + right_knee['y']}
+        // left_ankle = ${left_ankle['x'] + left_ankle['y']} right_ankle = ${right_ankle['x'] + right_ankle['y']}
+        // `)
+    $.each(total, (k,v) => {
+
+        if(k =='key'){
+            $('.ready .key').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .key').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .key').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        } else if (k =='a'){
+            $('.ready .a').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .a').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .a').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        } else if(k =='b1'){
+            $('.ready .b1').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .b1').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .b1').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        } else if(k =='b2'){
+            $('.ready .b2').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .b2').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .b2').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        } else if(k =='c'){
+            $('.ready .c').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .c').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .c').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        } else if(k =='d'){
+            $('.ready .d').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .d').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .d').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        } else if(k =='e'){
+            $('.ready .e').text(`${parseInt(sum / v.ready * 100)}% 일치`);
+            $('.set .e').text(`${parseInt(sum / v.set * 100)}% 일치`);
+            $('.go .e').text(`${parseInt(sum / v.go * 100)}% 일치`);
+        }
+       
+       
+        
+        
+        
+        
+        // sum / 
+    })
 }
+    
 /**
  * json 파일 세팅
  *
@@ -134,7 +143,6 @@ function check_pose(pose) {
  *
  */
 function set_exercise(file,name,url){
-    console.log(1)
     let exer_arr = [];
     //i 캠 개수 5개
     for(let i=1; i<6; i++){
@@ -168,12 +176,33 @@ function json_reader(link) {
  * @return  {[int]}  go 실행 자세 프레임
  */
 function set_poss(ready,set,go) { 
+    let sum_arr = [];
+    let sum_arr2 = [];
+    let sum_arr3 = [];
+    let sum_arr4 = [];
+    let sum_arr5 = [];
+    let sum_arr6 = [];
+    let sum_arr7 = [];
+    let sum_arr8 = [];
+    let sum_arr9 = [];
+    let sum_arr10 = [];
+    let sum_arr11 = [];
+    let sum_arr12 = [];
+    let sum_arr13 = [];
+    let sum_arr14 = [];
+    let sum_arr15 = [];
+    let sum_arr16 = [];
+    let sum_arr17 = [];
+    let sum_arr18 = [];
+    let sum_arr19 = [];
+    let sum_arr20 = [];
+    let sum_arr21 = [];
+    let sum_ready = 0;
+    let sum_set = 0;
+    let sum_go = 0;
     $.each(json_data, (k,v) => {
-        let data_nose = JSON.parse(`[${v.bones.nose}]`);
-        let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
-        let data_right_eye = JSON.parse(`[${v.bones.right_eye}]`);
-        let data_left_ear = JSON.parse(`[${v.bones.left_ear}]`);
-        let data_right_ear = JSON.parse(`[${v.bones.right_ear}]`);
+        
+        //눈, 귀, 코 좌표 제외
         let data_left_shoulder = JSON.parse(`[${v.bones.left_shoulder}]`);
         let data_right_shoulder = JSON.parse(`[${v.bones.right_shoulder}]`);
         let data_left_elbow = JSON.parse(`[${v.bones.left_elbow}]`);
@@ -187,15 +216,8 @@ function set_poss(ready,set,go) {
         let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
         let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
 
-       
-        let sum_arr = [];
-        
-         //x 축 y축 모두 더하기
-        let sum = data_nose[0] + data_nose[1] + 
-        data_left_eye[0] + data_left_eye[1] +
-        data_right_eye[0] + data_right_eye[1] +
-        data_left_ear[0] + data_left_ear[1] +
-        data_right_ear[0] + data_right_ear[1] +
+        //x 축 y축 모두 더하기
+        let sum =
         data_left_shoulder[0] + data_left_shoulder[1] +
         data_right_shoulder[0] + data_right_shoulder[1] +
         data_left_elbow[0] + data_left_elbow[1] +
@@ -210,36 +232,33 @@ function set_poss(ready,set,go) {
         data_left_ankle[0] + data_left_ankle[1] +
         data_right_ankle[0] + data_right_ankle[1];
         
-        
-        let sum_ready = 0;
-        let sum_set = 0;
-        let sum_go = 0;
         if(v.conditions == 'KEY'){
-            //준비
-            if(v.frame <= ready[0] || set[1] > v.frame <= ready[1]){
+            if(v.frame <= ready[0] || set[1] < v.frame){
                 sum_arr.push(sum);
-                //배열에 담기(length로 반복문 돌려서 평균 구하기 위해)
                 for(let i = 0; i < sum_arr.length; i++){
-                    
-                    sum_ready += sum_arr[i];
+                    sum_ready += sum_arr[i]
                 }
+                sum_ready /= sum_arr.length;
+                
             }
 
             //실행중
-            if(ready[0] > v.frame <= set[0] || go > v.frame <= set[1]){
-                sum_arr.push(sum);
-                for(let i = 0; i < sum_arr.length; i++){
-                    
-                    sum_set += sum_arr[i];
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr2.push(sum);
+                for(let i = 0; i < sum_arr2.length; i++){
+                    sum_set += sum_arr2[i];
                 }
+                sum_set /= sum_arr2.length;
             }
 
-            //실행
-            if(set[0] > v.frame <= go){
-                sum_arr.push(sum);
-                for(let i = 0; i < sum_arr.length; i++){
-                    sum_go += sum_arr[i];
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr3.push(sum);
+                for(let i = 0; i < sum_arr3.length; i++){
+                    
+                    sum_go += sum_arr3[i];
                 }
+                sum_go /= sum_arr3.length;
 
             }
             total.key = {
@@ -249,22 +268,214 @@ function set_poss(ready,set,go) {
             }
         } 
         else if(v.conditions == 'A'){
-            total['a'] = sum
+            if(v.frame <= ready[0] || set[1] < v.frame){
+                sum_arr4.push(sum);
+                for(let i = 0; i < sum_arr4.length; i++){
+                    sum_ready += sum_arr4[i]
+                }
+                sum_ready /= sum_arr4.length;
+                
+            }
+
+            //실행중
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr5.push(sum);
+                for(let i = 0; i < sum_arr5.length; i++){
+                    sum_set += sum_arr5[i];
+                }
+                sum_set /= sum_arr5.length;
+            }
+
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr6.push(sum);
+                for(let i = 0; i < sum_arr6.length; i++){
+                    
+                    sum_go += sum_arr6[i];
+                }
+                sum_go /= sum_arr6.length;
+
+            }
+            total.a = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
             
         } else if(v.conditions == 'B1'){
-            total['b1'] = sum
+            if(v.frame <= ready[0] || set[1] < v.frame){
+                sum_arr7.push(sum);
+                for(let i = 0; i < sum_arr7.length; i++){
+                    sum_ready += sum_arr7[i]
+                }
+                sum_ready /= sum_arr7.length;
+                
+            }
+
+            //실행중
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr8.push(sum);
+                for(let i = 0; i < sum_arr8.length; i++){
+                    sum_set += sum_arr8[i];
+                }
+                sum_set /= sum_arr8.length;
+            }
+
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr9.push(sum);
+                for(let i = 0; i < sum_arr9.length; i++){
+                    
+                    sum_go += sum_arr9[i];
+                }
+                sum_go /= sum_arr9.length;
+
+            }
+            total.b1 = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
             
         } else if(v.conditions == 'B2'){
-            total['b2'] = sum
+            if(v.frame <= ready[0] || set[1] < v.frame){
+                sum_arr10.push(sum);
+                for(let i = 0; i < sum_arr10.length; i++){
+                    sum_ready += sum_arr10[i]
+                }
+                sum_ready /= sum_arr10.length;
+                
+            }
+
+            //실행중
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr11.push(sum);
+                for(let i = 0; i < sum_arr11.length; i++){
+                    sum_set += sum_arr11[i];
+                }
+                sum_set /= sum_arr11.length;
+            }
+
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr12.push(sum);
+                for(let i = 0; i < sum_arr12.length; i++){
+                    
+                    sum_go += sum_arr12[i];
+                }
+                sum_go /= sum_arr12.length;
+
+            }
+            total.b2 = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
             
         } else if(v.conditions == 'C'){
-            total['c'] = sum
+            if(v.frame <= ready[0] || set[1] < v.frame){
+                sum_arr13.push(sum);
+                for(let i = 0; i < sum_arr13.length; i++){
+                    sum_ready += sum_arr13[i]
+                }
+                sum_ready /= sum_arr13.length;
+                
+            }
+
+            //실행중
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr14.push(sum);
+                for(let i = 0; i < sum_arr14.length; i++){
+                    sum_set += sum_arr14[i];
+                }
+                sum_set /= sum_arr14.length;
+            }
+
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr15.push(sum);
+                for(let i = 0; i < sum_arr15.length; i++){
+                    
+                    sum_go += sum_arr15[i];
+                }
+                sum_go /= sum_arr15.length;
+
+            }
+            total.c = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
             
         } else if(v.conditions == 'D'){
-            total['d'] = sum
+            if(v.frame <= ready[0] || set[1] < v.frame){
+                sum_arr16.push(sum);
+                for(let i = 0; i < sum_arr16.length; i++){
+                    sum_ready += sum_arr16[i]
+                }
+                sum_ready /= sum_arr16.length;
+                
+            }
+
+            //실행중
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr17.push(sum);
+                for(let i = 0; i < sum_arr17.length; i++){
+                    sum_set += sum_arr17[i];
+                }
+                sum_set /= sum_arr17.length;
+            }
+
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr18.push(sum);
+                for(let i = 0; i < sum_arr18.length; i++){
+                    
+                    sum_go += sum_arr18[i];
+                }
+                sum_go /= sum_arr18.length;
+
+            }
+            total.d = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
             
         } else if(v.conditions == 'E'){
-            total['e'] = sum
+            if(v.frame <= ready[0] || set[1] < v.frame){
+                sum_arr19.push(sum);
+                for(let i = 0; i < sum_arr19.length; i++){
+                    sum_ready += sum_arr19[i]
+                }
+                sum_ready /= sum_arr19.length;
+                
+            }
+
+            //실행중
+            if((go < v.frame && v.frame <= set[1]) || (ready[0] < v.frame && v.frame <= set[0])){
+                sum_arr20.push(sum);
+                for(let i = 0; i < sum_arr20.length; i++){
+                    sum_set += sum_arr20[i];
+                }
+                sum_set /= sum_arr20.length;
+            }
+
+            //v.frame 중에 set[0]보다 크고 go보다 작은 수
+            if(set[0] <=  v.frame && v.frame <= go){
+                sum_arr21.push(sum);
+                for(let i = 0; i < sum_arr21.length; i++){
+                    
+                    sum_go += sum_arr21[i];
+                }
+                sum_go /= sum_arr21.length;
+
+            }
+            total.e = {
+                'ready' : sum_ready,
+                'set' : sum_set,
+                'go' : sum_go
+            }
         }
     })
 };
