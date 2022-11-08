@@ -2,13 +2,13 @@
 $(()=>{
 
 })
-// console.log(arnold_press);
-
-// console.log(json_data);
+// .on('click', '#arnold')
 const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
-let total = {};
+const json_data = [];
+let test2 = 0;
+let total = [];
 let pose_status = 2;
 let keep_time = [0, 0, 0];
 let result_message = "";
@@ -16,11 +16,23 @@ let result_message = "";
 navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (stream) {
     video.srcObject = stream;
 });
+
+
+//아놀드프레스
 $('#arnold').click(()=>{
+    const arnold_press = {
+        a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
+        b1 : set_exercise(58,'Arnold_press_B1_cam','./json/arnold_press/Arnold_press_b1/'),
+        b2 : set_exercise(58,'Arnold_press_B2_cam','./json/arnold_press/Arnold_press_b2/'),
+        c : set_exercise(58,'Arnold_press_C_cam','./json/arnold_press/Arnold_press_c/'),
+        d : set_exercise(57,'Arnold_press_D_cam','./json/arnold_press/Arnold_press_d/'),
+        e : set_exercise(58,'Arnold_press_E_cam','./json/arnold_press/Arnold_press_e/'),
+        key : set_exercise(58,'Arnold_press_KEY_cam','./json/arnold_press/Arnold_press_key/')
+    }
      $.each(arnold_press, (k,v)=>{
         arnold_press[k];
-        console.log(total);
      })
+     set_poss();
 })
 
 posenet.load().then((model) => {
@@ -72,7 +84,6 @@ let count_time = setInterval(function () {
 
 //실시간 좌표와 json의 좌표값 비교
 function check_pose(pose) {
-    // console.log(total);
     //목, 손바닥, 등, 허리 발바닥 좌표 없음
     let nose = pose.keypoints[0].position; //머리(코)
     let left_eye = pose.keypoints[1].position; //머리(왼쪽 눈)
@@ -92,42 +103,28 @@ function check_pose(pose) {
     let left_ankle = pose.keypoints[15].position; //다리(왼쪽 발목)
     let right_ankle = pose.keypoints[16].position; //다리(오른쪽 발목)
 
+    let sum = 
+        nose['x'] + nose['y'] + 
+        left_eye['x'] + left_eye['y'] +
+        right_eye['x'] + right_eye['y'] +
+        left_ear['x'] + left_ear['y'] +
+        right_ear['x'] + right_ear['y'] +
+        left_shoulder['x'] + left_shoulder['y'] +
+        right_shoulder['x'] + right_shoulder['y'] +
+        left_elbow['x'] + left_elbow['y'] +
+        right_elbow['x'] + right_elbow['y'] +
+        left_wrist['x'] + left_wrist['y'] +
+        right_wrist['x'] + right_wrist['y'] +
+        left_hip['x'] + left_hip['y'] +
+        right_hip['x'] + right_hip['y'] +
+        right_hip['x'] + right_hip['y'] +
+        left_knee['x'] + left_knee['y'] +
+        right_knee['x'] + right_knee['y'] +
+        left_ankle['x'] + left_ankle['y'] +
+        right_ankle['x'] + right_ankle['y'];
+    
+    
 }
-// const conditions = {
-//     a : $.each(json_data, (k,v) => {}),
-//     b1 : $.each(json_data, (k,v) => {}),
-//     b2 : $.each(json_data, (k,v) => {}),
-//     c : $.each(json_data, (k,v) => {}),
-//     d : $.each(json_data, (k,v) => {}),
-//     e : $.each(json_data, (k,v) => {}),
-//     key : $.each(json_data, (k,v) => {})
-// }
-
-const arnold_press = {
-    a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
-    b1 : set_exercise(58,'Arnold_press_B1_cam','./json/arnold_press/Arnold_press_b1/'),
-    b2 : set_exercise(58,'Arnold_press_B2_cam','./json/arnold_press/Arnold_press_b2/'),
-    c : set_exercise(58,'Arnold_press_C_cam','./json/arnold_press/Arnold_press_c/'),
-    d : set_exercise(57,'Arnold_press_D_cam','./json/arnold_press/Arnold_press_d/'),
-    e : set_exercise(58,'Arnold_press_E_cam','./json/arnold_press/Arnold_press_e/'),
-    key : set_exercise(58,'Arnold_press_KEY_cam','./json/arnold_press/Arnold_press_key/')
-}
-
-//     async function exercise_data(link) { 
-//         let data = await json_reader(link); 
-//         //준비
-//         if(data.frame <= 11 || 45 > data.frame <= 57){
-//             data.status = 'ready';
-//         //실행중
-//         } else if(11 > data.frame <= 21 || 30 > data.frame <= 45){
-//             data.status = 'set';
-//         //실행
-//         } else if(21 > data.frame <= 30){
-//             data.status = 'go';
-//         }
-//         json_data.push(data);
-//       };
-// }
 /**
  * json 파일 세팅
  *
@@ -137,6 +134,7 @@ const arnold_press = {
  *
  */
 function set_exercise(file,name,url){
+    console.log(1)
     let exer_arr = [];
     //i 캠 개수 5개
     for(let i=1; i<6; i++){
@@ -147,107 +145,108 @@ function set_exercise(file,name,url){
     }
 }
 
+//json 파일 데이터 요청 후 전역변수 배열에 데이터 push
 function json_reader(link) {
     $.ajax({
         async: false, //동기처리 안하면 메모리 에러 뜸
         dataType : 'Json',
         url: link,
-    }).done((data)=>{
-        let sum_arr = [];
-        $.each(data, (k,v) => {
-            let data_nose = JSON.parse(`[${v.bones.nose}]`);
-            let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
-            let data_right_eye = JSON.parse(`[${v.bones.right_eye}]`);
-            let data_left_ear = JSON.parse(`[${v.bones.left_ear}]`);
-            let data_right_ear = JSON.parse(`[${v.bones.right_ear}]`);
-            let data_left_shoulder = JSON.parse(`[${v.bones.left_shoulder}]`);
-            let data_right_shoulder = JSON.parse(`[${v.bones.right_shoulder}]`);
-            let data_left_elbow = JSON.parse(`[${v.bones.left_elbow}]`);
-            let data_right_elbow = JSON.parse(`[${v.bones.right_elbow}]`);
-            let data_left_wrist = JSON.parse(`[${v.bones.left_wrist}]`);
-            let data_right_wrist = JSON.parse(`[${v.bones.right_wrist}]`);
-            let data_left_hip = JSON.parse(`[${v.bones.left_hip}]`);
-            let data_right_hip = JSON.parse(`[${v.bones.right_hip}]`);
-            let data_left_knee = JSON.parse(`[${v.bones.left_knee}]`);
-            let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
-            let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
-            let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
-
-            //x 축 y축 모두 더하기
-            let sum = 
-                data_nose[0] + data_nose[1] + 
-                data_left_eye[0] + data_left_eye[1] +
-                data_right_eye[0] + data_right_eye[1] +
-                data_left_ear[0] + data_left_ear[1] +
-                data_right_ear[0] + data_right_ear[1] +
-                data_left_shoulder[0] + data_left_shoulder[1] +
-                data_right_shoulder[0] + data_right_shoulder[1] +
-                data_left_elbow[0] + data_left_elbow[1] +
-                data_right_elbow[0] + data_right_elbow[1] +
-                data_left_wrist[0] + data_left_wrist[1] +
-                data_right_wrist[0] + data_right_wrist[1] +
-                data_left_hip[0] + data_left_hip[1] +
-                data_right_hip[0] + data_right_hip[1] +
-                data_right_hip[0] + data_right_hip[1] +
-                data_left_knee[0] + data_left_knee[1] +
-                data_right_knee[0] + data_right_knee[1] +
-                data_left_ankle[0] + data_left_ankle[1] +
-                data_right_ankle[0] + data_right_ankle[1]
-            sum_arr.push(sum);
-            console.log(sum_arr);
-            if(v.conditions == 'KEY'){
-                total.key = sum_arr
-                
-                console.log(total)
-            } 
-            else if(v.conditions == 'A'){
-                total['a'] = sum
-                
-            } else if(v.conditions == 'B1'){
-                total['b1'] = sum
-                
-            } else if(v.conditions == 'B2'){
-                total['b2'] = sum
-                
-            } else if(v.conditions == 'C'){
-                total['c'] = sum
-                
-            } else if(v.conditions == 'D'){
-                total['d'] = sum
-                
-            } else if(v.conditions == 'E'){
-                total['e'] = sum
-            }
-        }
-    )
+    }
+    ).done((data)=>{
+        json_data.push(data.info);
     }).fail((a,b,c)=>{
         console.log(a)
     })
 }
-// async function exercise_data(link) { 
-//     let data = await json_reader(link); 
-//     json_data.push(data);
-// };
 
-// function json_reader(link) {
-//     // 반환값을 받을 Promise 객체 생성
-//     return new Promise(function (receive) {
-//         fetch(link) // json 파일 읽어오기
-//         .then(function (res) {
-//             return res.json(); // 읽어온 데이터를 json으로 변환
-//         })
-//         .then(function (data) { 
-//             // $('.main_section h1').text($('.main_section h1').text()+data.info.name);
-//             // $('.e_point').text($('.e_point').text()+data.info.e_point);
-//             // $('.desc').text($('.desc').text()+data.info.desc);
-//             receive(data.info); // json파일을 텍스트로
-//         });
-//     });
-// }
-// async function exercise_data(link) { 
-//     let data = await json_reader(link); 
-//     json_data.push(data);
-// };
+//포즈 세팅 후 3단계 동작으로 나눈 후 동작의 좌표값 평균을 구한다
+function set_poss() { 
+    $.each(json_data, (k,v) => {
+        let data_nose = JSON.parse(`[${v.bones.nose}]`);
+        let data_left_eye = JSON.parse(`[${v.bones.left_eye}]`);
+        let data_right_eye = JSON.parse(`[${v.bones.right_eye}]`);
+        let data_left_ear = JSON.parse(`[${v.bones.left_ear}]`);
+        let data_right_ear = JSON.parse(`[${v.bones.right_ear}]`);
+        let data_left_shoulder = JSON.parse(`[${v.bones.left_shoulder}]`);
+        let data_right_shoulder = JSON.parse(`[${v.bones.right_shoulder}]`);
+        let data_left_elbow = JSON.parse(`[${v.bones.left_elbow}]`);
+        let data_right_elbow = JSON.parse(`[${v.bones.right_elbow}]`);
+        let data_left_wrist = JSON.parse(`[${v.bones.left_wrist}]`);
+        let data_right_wrist = JSON.parse(`[${v.bones.right_wrist}]`);
+        let data_left_hip = JSON.parse(`[${v.bones.left_hip}]`);
+        let data_right_hip = JSON.parse(`[${v.bones.right_hip}]`);
+        let data_left_knee = JSON.parse(`[${v.bones.left_knee}]`);
+        let data_right_knee = JSON.parse(`[${v.bones.right_knee}]`);
+        let data_left_ankle = JSON.parse(`[${v.bones.left_ankle}]`);
+        let data_right_ankle = JSON.parse(`[${v.bones.right_ankle}]`);
+
+        //x 축 y축 모두 더하기
+        let sum = 
+            data_nose[0] + data_nose[1] + 
+            data_left_eye[0] + data_left_eye[1] +
+            data_right_eye[0] + data_right_eye[1] +
+            data_left_ear[0] + data_left_ear[1] +
+            data_right_ear[0] + data_right_ear[1] +
+            data_left_shoulder[0] + data_left_shoulder[1] +
+            data_right_shoulder[0] + data_right_shoulder[1] +
+            data_left_elbow[0] + data_left_elbow[1] +
+            data_right_elbow[0] + data_right_elbow[1] +
+            data_left_wrist[0] + data_left_wrist[1] +
+            data_right_wrist[0] + data_right_wrist[1] +
+            data_left_hip[0] + data_left_hip[1] +
+            data_right_hip[0] + data_right_hip[1] +
+            data_right_hip[0] + data_right_hip[1] +
+            data_left_knee[0] + data_left_knee[1] +
+            data_right_knee[0] + data_right_knee[1] +
+            data_left_ankle[0] + data_left_ankle[1] +
+            data_right_ankle[0] + data_right_ankle[1];
+
+        if(v.conditions == 'KEY'){
+            //준비
+            if(v.frame <= 11 || 45 > v.frame <= 57){
+                v.status = 'ready';
+                let test = sum;
+
+                for(let i = 0; i < sum.length; i++){
+                    test2 += sum[i]
+                    console.log(sum[i]);
+                }
+                
+                total.push(test2);
+            //실행중
+            } else if(11 > v.frame <= 21 || 30 > v.frame <= 45){
+                v.status = 'set';
+            //실행
+            } else if(21 > v.frame <= 30){
+                v.status = 'go';
+            }
+            
+        } 
+        else if(v.conditions == 'A'){
+            total['a'] = sum
+            
+        } else if(v.conditions == 'B1'){
+            total['b1'] = sum
+            
+        } else if(v.conditions == 'B2'){
+            total['b2'] = sum
+            
+        } else if(v.conditions == 'C'){
+            total['c'] = sum
+            
+        } else if(v.conditions == 'D'){
+            total['d'] = sum
+            
+        } else if(v.conditions == 'E'){
+            total['e'] = sum
+        }
+    })
+};
+
+
+
+
+
 
 /* PoseNet을 쓰면서 사용하는 함수들 코드 - 그냥 복사해서 쓰기 */
 //tensorflow에서 제공하는 js 파트
