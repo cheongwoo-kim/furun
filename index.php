@@ -37,7 +37,7 @@
                     
                     
                 </article>
-                <article class="ready">
+                <!-- <article class="ready">
                     <h2>준비</h2>
                     <span>key : <span class="key"></span></span>
                     <span>a : <span class="a"></span></span>
@@ -56,9 +56,9 @@
                     <span>c : <span class="c"></span></span>
                     <span>d : <span class="d"></span></span>
                     <span>e : <span class="e"></span></span>
-                </article>
+                </article> -->
                 <article class="go">
-                    <h2>실행</h2>
+                    <!-- <h2>실행</h2> -->
                     <span>key : <span class="key"></span></span>
                     <span>a : <span class="a"></span></span>
                     <span>b1 : <span class="b1"></span></span>
@@ -68,6 +68,7 @@
                     <span>e : <span class="e"></span></span>
                 </article>
                 <button id="arnold">아놀드프레스</button>
+                <!-- <button id="s_shoulder">시티드 숄더프레스</button> -->
             </section>
         </main>
         <script src="Jquery.js"></script>

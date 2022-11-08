@@ -28,10 +28,18 @@ $('#arnold').click(()=>{
      $.each(arnold_press, (k,v)=>{
         arnold_press[k];
      })
-     set_poss([11,57],[21,45],30);
-     $('.e_point').text(json_data[0]['e_point']);
-     $('.e_name').text(json_data[0]['name'])
-     $('.e_desc').text(json_data[0]['desc'])
+     set_poss([11,58],[21,45],30);
+})
+//시티드 숄더프레스
+$('#s_shoulder').click(()=>{
+    let arnold_press = {
+        d : set_exercise(57,'Seated_shoulder_press_D_cam','./json/Seated_shoulder_press/Seated_shoulder_press_D/'),
+        key : set_exercise(56,'Seated_shoulder_press_KEY_cam','./json/Seated_shoulder_press/Seated_shoulder_press_KEY/')
+    }
+     $.each(arnold_press, (k,v)=>{
+        arnold_press[k];
+     })
+     set_poss([8,57],[17,48],33);
 })
 
 posenet.load().then((model) => {
@@ -96,41 +104,34 @@ function check_pose(pose) {
     $.each(total, (k,v) => {
 
         if(k =='key'){
-            $('.ready .key').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .key').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .key').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .key').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .key').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .key').text(`${parseInt(sum / v.go * 100)}%`);
         } else if (k =='a'){
-            $('.ready .a').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .a').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .a').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .a').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .a').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .a').text(`${parseInt(sum / v.go * 100)}%`);
         } else if(k =='b1'){
-            $('.ready .b1').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .b1').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .b1').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .b1').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .b1').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .b1').text(`${parseInt(sum / v.go * 100)}%`);
         } else if(k =='b2'){
-            $('.ready .b2').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .b2').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .b2').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .b2').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .b2').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .b2').text(`${parseInt(sum / v.go * 100)}%`);
         } else if(k =='c'){
-            $('.ready .c').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .c').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .c').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .c').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .c').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .c').text(`${parseInt(sum / v.go * 100)}%`);
         } else if(k =='d'){
-            $('.ready .d').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .d').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .d').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .d').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .d').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .d').text(`${parseInt(sum / v.go * 100)}%`);
         } else if(k =='e'){
-            $('.ready .e').text(`${parseInt(sum / v.ready * 100)}% 일치`);
-            $('.set .e').text(`${parseInt(sum / v.set * 100)}% 일치`);
-            $('.go .e').text(`${parseInt(sum / v.go * 100)}% 일치`);
+            // $('.ready .e').text(`${parseInt(sum / v.ready * 100)}%`);
+            // $('.set .e').text(`${parseInt(sum / v.set * 100)}%`);
+            $('.go .e').text(`${parseInt(sum / v.go * 100)}%`);
         }
-       
-       
-        
-        
-        
-        
-        // sum / 
     })
 }
     
@@ -233,6 +234,11 @@ function set_poss(ready,set,go) {
         data_right_ankle[0] + data_right_ankle[1];
         
         if(v.conditions == 'KEY'){
+            //key 포인트 때의 설명 추가 
+            $('.e_point').text(v.e_point);
+            $('.e_name').text(v.name)
+            $('.e_desc').text(v.desc)
+
             if(v.frame <= ready[0] || set[1] < v.frame){
                 sum_arr.push(sum);
                 for(let i = 0; i < sum_arr.length; i++){
