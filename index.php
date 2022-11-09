@@ -32,6 +32,9 @@
                 height: 100%;
                 margin-bottom: 0px;
             }
+            .select{
+                gap: 12px;
+            }
         </style>
         <title>Title</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
@@ -92,9 +95,34 @@
                     <span>e : <span class="e"></span></span> -->
                 </article>
                 <h3>운동 선택</h3>
-                <button onclick="location.href='./?name=arnold_press'" id="arnold_press">아놀드프레스</button>
-                <button onclick="location.href='./?name=One-arm_dumbbell_shoulder_press'" id="One-arm_dumbbell_shoulder_press">아놀드프레스</button>
-                <!-- <button id="s_shoulder">시티드 숄더프레스</button> -->
+                <div class="d-flex flex-column select w-50 m-auto" >
+                <?php 
+                    $folderName = './json'; 
+                    // 디렉터리가 있는지 확인
+                    if (is_dir($folderName)) {
+                        // 디렉터리 열기
+                        $open = opendir($folderName);
+                        if($open) {
+                            // 반복문을 통하여 폴더 내용 읽어오기
+                            while(($read = readdir($open))) {
+                                if($read != '.' && $read != '..'){
+                                    $url = "location.href='./?name=$read'";
+                                    $name = str_replace("_", " ", $read);
+                                    echo "<button class='btn btn-primary' onclick=$url id='$read'>$name</button>" ;
+                                }
+                                
+                            } 
+                        }
+                    }
+                ?>
+                </div>
+                    <!-- <button class="btn btn-primary" onclick="location.href='./?name=arnold_press'" id="arnold_press">arnold press</button>
+                    <button class="btn btn-primary" onclick="location.href='./?name=One-arm_dumbbell_shoulder_press'" id="One-arm_dumbbell_shoulder_press">One arm dumbbell shoulder press</button>
+                    <button class="btn btn-primary" onclick="location.href='./?name=Back_lunge'" id="Back_lunge">Back_lunge</button>
+                    <button class="btn btn-primary" onclick="location.href='./?name=Dumbbell_bent-over_lateral_raise'" id="Dumbbell_bent-over_lateral_raise">Dumbbell_bent-over_lateral_raise</button> -->
+                    
+                
+                
 
             </section>
         </main>

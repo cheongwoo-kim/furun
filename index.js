@@ -35,8 +35,52 @@ $(() => {
                     a: set_exercise(58, 'One-arm_dumbbell_shoulder_press_A_cam', './json/One-arm_dumbbell_shoulder_press/a/'),
                     b: set_exercise(58, 'One-arm_dumbbell_shoulder_press_B_cam', './json/One-arm_dumbbell_shoulder_press/b/'),
                     c: set_exercise(58, 'One-arm_dumbbell_shoulder_press_C_cam', './json/One-arm_dumbbell_shoulder_press/c/'),
-                    d: set_exercise(57, 'One-arm_dumbbell_shoulder_press_D_cam', './json/One-arm_dumbbell_shoulder_press/d/'),
+                    d: set_exercise(58, 'One-arm_dumbbell_shoulder_press_D_cam', './json/One-arm_dumbbell_shoulder_press/d/'),
                     key: set_exercise(58, 'One-arm_dumbbell_shoulder_press_KEY_cam', './json/One-arm_dumbbell_shoulder_press/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                    `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
+        if (name == 'Back_lunge') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'Back_lunge_A_cam', './json/Back_lunge/a/'),
+                    b: set_exercise(58, 'Back_lunge_B_cam', './json/Back_lunge/b/'),
+                    c: set_exercise(58, 'Back_lunge_C_cam', './json/Back_lunge/c/'),
+                    d: set_exercise(58, 'Back_lunge_D_cam', './json/Back_lunge/d/'),
+                    e: set_exercise(58, 'Back_lunge_E_cam', './json/Back_lunge/e/'),
+                    key: set_exercise(58, 'Back_lunge_KEY_cam', './json/Back_lunge/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                    `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
+        if (name == 'Dumbbell_bent-over_lateral_raise') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'Dumbbell_bent-over_lateral_raise_A_cam', './json/Dumbbell_bent-over_lateral_raise/a/'),
+                    b: set_exercise(57, 'Dumbbell_bent-over_lateral_raise_B_cam', './json/Dumbbell_bent-over_lateral_raise/b/'),
+                    c: set_exercise(58, 'Dumbbell_bent-over_lateral_raise_C_cam', './json/Dumbbell_bent-over_lateral_raise/c/'),
+                    d: set_exercise(58, 'Dumbbell_bent-over_lateral_raise_D_cam', './json/Dumbbell_bent-over_lateral_raise/d/'),
+                    e: set_exercise(58, 'Dumbbell_bent-over_lateral_raise_E_cam', './json/Dumbbell_bent-over_lateral_raise/e/'),
+                    key: set_exercise(58, 'Dumbbell_bent-over_lateral_raise_KEY_cam', './json/Dumbbell_bent-over_lateral_raise/key/')
                 }
                 $.each(exer, (k, v) => {
                     $('.go').append(
