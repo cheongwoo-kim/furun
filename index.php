@@ -57,12 +57,14 @@
                     
                     
                 </article>
-                <div class="position-relative text-center">
-                    <article class="loading d-none"><p>로드중입니다.</p></article>
-                    <video id="video" width="640" height="480" autoplay muted playsinline></video>
-                    <canvas id="canvas"></canvas>
-                        
-                </div>
+                <?php if ($_GET['name']) :?>
+                    <div class="position-relative text-center frame">
+                        <article class="loading d-none"><p>로드중입니다.</p></article>
+                        <video id="video" width="640" height="480" autoplay muted playsinline></video>
+                        <canvas id="canvas"></canvas>
+                            
+                    </div>
+                <?php endif;?>
                 <!-- <article class="ready">
                     <h2>준비</h2>
                     <span>key : <span class="key"></span></span>
@@ -94,8 +96,8 @@
                     <span>d : <span class="d"></span></span>
                     <span>e : <span class="e"></span></span> -->
                 </article>
-                <h3>운동 선택</h3>
-                <div class="d-flex flex-column select w-50 m-auto" >
+                <h3 class="mt-4">운동 선택</h3>
+                <div class="d-flex flex-column select w-50 mx-auto my-5" >
                 <?php 
                     $folderName = './json'; 
                     // 디렉터리가 있는지 확인
