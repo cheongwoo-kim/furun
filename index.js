@@ -136,7 +136,7 @@ $(() => {
                 $('.loading').addClass('d-none');
             }, 1000);
         }
-        if (name == 'V-ups') {
+        if (name == 'Side_crunch') {
             setTimeout(() => {
                 var exer = {
                     a: set_exercise(58, 'Side_crunch_A_cam', './json/Side_crunch/a/'),
@@ -155,7 +155,7 @@ $(() => {
                 $('.loading').addClass('d-none');
             }, 1000);
         }
-        if (name == 'Side_crunch') {
+        if (name == 'V-ups') {
             setTimeout(() => {
                 var exer = {
                     a: set_exercise(58, 'V-ups_A_cam', './json/V-ups/a/'),
