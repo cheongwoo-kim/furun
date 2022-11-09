@@ -25,7 +25,7 @@ $(() => {
                     )
                     exer[k];
                 })
-                set_poss([11, 58], [21, 45], 30);
+                set_poss();
                 $('.loading').addClass('d-none');
             }, 1000);
         }
@@ -46,7 +46,7 @@ $(() => {
                     )
                     exer[k];
                 })
-                set_poss([11, 58], [21, 45], 30);
+                set_poss();
                 $('.loading').addClass('d-none');
             }, 1000);
         }
