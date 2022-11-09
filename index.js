@@ -94,8 +94,48 @@ $(() => {
                 $('.loading').addClass('d-none');
             }, 1000);
         }
-
-        
+        if (name == 'High-pull') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'High-pull_A_cam', './json/High-pull/a/'),
+                    b: set_exercise(58, 'High-pull_B_cam', './json/High-pull/b/'),
+                    c: set_exercise(58, 'High-pull_C_cam', './json/High-pull/c/'),
+                    d: set_exercise(58, 'High-pull_D_cam', './json/High-pull/d/'),
+                    key: set_exercise(58, 'High-pull_KEY_cam', './json/High-pull/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                        `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
+        if (name == 'Side_bend') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'Side_bend_A_cam', './json/Side_bend/a/'),
+                    b: set_exercise(58, 'Side_bend_B_cam', './json/Side_bend/b/'),
+                    c: set_exercise(58, 'Side_bend_C_cam', './json/Side_bend/c/'),
+                    d: set_exercise(58, 'Side_bend_D_cam', './json/Side_bend/d/'),
+                    key: set_exercise(58, 'Side_bend_KEY_cam', './json/Side_bend/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                        `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
     }
 
 

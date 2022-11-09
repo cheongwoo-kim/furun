@@ -116,14 +116,6 @@
                     }
                 ?>
                 </div>
-                    <!-- <button class="btn btn-primary" onclick="location.href='./?name=arnold_press'" id="arnold_press">arnold press</button>
-                    <button class="btn btn-primary" onclick="location.href='./?name=One-arm_dumbbell_shoulder_press'" id="One-arm_dumbbell_shoulder_press">One arm dumbbell shoulder press</button>
-                    <button class="btn btn-primary" onclick="location.href='./?name=Back_lunge'" id="Back_lunge">Back_lunge</button>
-                    <button class="btn btn-primary" onclick="location.href='./?name=Dumbbell_bent-over_lateral_raise'" id="Dumbbell_bent-over_lateral_raise">Dumbbell_bent-over_lateral_raise</button> -->
-                    
-                
-                
-
             </section>
         </main>
         <script src="Jquery.js"></script>
