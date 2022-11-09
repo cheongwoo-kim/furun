@@ -45,19 +45,21 @@
     <body>
         <main>
             <section class="main_section">
-                <h1>운동 명칭 : <span class="e_name"></span></h1>
-                <article>
+                <article class="top">
+                    <h1>운동 명칭 : <span class="e_name"></span></h1>
+                
                     <p>운동 부위 : <span class="e_point"></span></p>
                     <p>운동 설명 : <span class="e_desc"></span></p>
-                    <div class="position-relative text-center">
-                        <article class="loading d-none"><p>로드중입니다.</p></article>
-                        <video id="video" width="640" height="480" autoplay muted playsinline></video>
-                        <canvas id="canvas"></canvas>
-                        
-                    </div>
+                    
                     
                     
                 </article>
+                <div class="position-relative text-center">
+                    <article class="loading d-none"><p>로드중입니다.</p></article>
+                    <video id="video" width="640" height="480" autoplay muted playsinline></video>
+                    <canvas id="canvas"></canvas>
+                        
+                </div>
                 <!-- <article class="ready">
                     <h2>준비</h2>
                     <span>key : <span class="key"></span></span>
@@ -80,15 +82,18 @@
                 </article> -->
                 <article class="go">
                     <!-- <h2>실행</h2> -->
-                    <span>key : <span class="key"></span></span>
+                    <!-- <span>key : <span class="key"></span></span>
                     <span>a : <span class="a"></span></span>
+                    <span>b : <span class="b"></span></span>
                     <span>b1 : <span class="b1"></span></span>
                     <span>b2 : <span class="b2"></span></span>
                     <span>c : <span class="c"></span></span>
                     <span>d : <span class="d"></span></span>
-                    <span>e : <span class="e"></span></span>
+                    <span>e : <span class="e"></span></span> -->
                 </article>
-                <button id="arnold">아놀드프레스</button>
+                <h3>운동 선택</h3>
+                <button onclick="location.href='./?name=arnold_press'" id="arnold_press">아놀드프레스</button>
+                <button onclick="location.href='./?name=One-arm_dumbbell_shoulder_press'" id="One-arm_dumbbell_shoulder_press">아놀드프레스</button>
                 <!-- <button id="s_shoulder">시티드 숄더프레스</button> -->
 
             </section>
