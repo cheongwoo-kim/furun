@@ -136,6 +136,87 @@ $(() => {
                 $('.loading').addClass('d-none');
             }, 1000);
         }
+        if (name == 'V-ups') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'Side_crunch_A_cam', './json/Side_crunch/a/'),
+                    b: set_exercise(58, 'Side_crunch_b_cam', './json/Side_crunch/b/'),
+                    key: set_exercise(58, 'Side_crunch_KEY_cam', './json/Side_crunch/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                        `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
+        if (name == 'Side_crunch') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'V-ups_A_cam', './json/V-ups/a/'),
+                    c: set_exercise(58, 'V-ups_C_cam', './json/V-ups/c/'),
+                    key: set_exercise(58, 'V-ups_KEY_cam', './json/V-ups/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                        `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
+        if (name == 'Shoulder_press') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'Shoulder_press_A_cam', './json/Shoulder_press/a/'),
+                    b: set_exercise(58, 'Shoulder_press_B_cam', './json/Shoulder_press/b/'),
+                    c: set_exercise(58, 'Shoulder_press_C_cam', './json/Shoulder_press/c/'),
+                    e: set_exercise(58, 'Shoulder_press_E_cam', './json/Shoulder_press/e/'),
+                    key: set_exercise(58, 'Shoulder_press_KEY_cam', './json/Shoulder_press/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                        `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
+        
+        if (name == 'Seated_fly') {
+            setTimeout(() => {
+                var exer = {
+                    a: set_exercise(58, 'Seated_fly_A_cam', './json/Seated_fly/a/'),
+                    b: set_exercise(58, 'Seated_fly_B_cam', './json/Seated_fly/b/'),
+                    c: set_exercise(58, 'Seated_fly_C_cam', './json/Seated_fly/c/'),
+                    d: set_exercise(58, 'Seated_fly_D_cam', './json/Seated_fly/d/'),
+                    key: set_exercise(58, 'Seated_fly_KEY_cam', './json/Seated_fly/key/')
+                }
+                $.each(exer, (k, v) => {
+                    $('.go').append(
+                        `
+                        <span>${k} : <span class="${k}"></span></span>
+                        `
+                    )
+                    exer[k];
+                })
+                set_poss();
+                $('.loading').addClass('d-none');
+            }, 1000);
+        }
     }
 
 
