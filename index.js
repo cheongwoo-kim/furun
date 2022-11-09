@@ -16,19 +16,26 @@ navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(function (
 
 //아놀드프레스
 $('#arnold').click(()=>{
-    let arnold_press = {
-        a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
-        b1 : set_exercise(58,'Arnold_press_B1_cam','./json/arnold_press/Arnold_press_b1/'),
-        b2 : set_exercise(58,'Arnold_press_B2_cam','./json/arnold_press/Arnold_press_b2/'),
-        c : set_exercise(58,'Arnold_press_C_cam','./json/arnold_press/Arnold_press_c/'),
-        d : set_exercise(57,'Arnold_press_D_cam','./json/arnold_press/Arnold_press_d/'),
-        e : set_exercise(58,'Arnold_press_E_cam','./json/arnold_press/Arnold_press_e/'),
-        key : set_exercise(58,'Arnold_press_KEY_cam','./json/arnold_press/Arnold_press_key/')
-    }
-     $.each(arnold_press, (k,v)=>{
-        arnold_press[k];
-     })
-     set_poss([11,58],[21,45],30);
+        $('.loading').removeClass('d-none');
+        setTimeout(() => {
+            let arnold_press = {
+                a : set_exercise(58,'Arnold_press_A_cam','./json/arnold_press/Arnold_press_a/'),
+                b1 : set_exercise(58,'Arnold_press_B1_cam','./json/arnold_press/Arnold_press_b1/'),
+                b2 : set_exercise(58,'Arnold_press_B2_cam','./json/arnold_press/Arnold_press_b2/'),
+                c : set_exercise(58,'Arnold_press_C_cam','./json/arnold_press/Arnold_press_c/'),
+                d : set_exercise(57,'Arnold_press_D_cam','./json/arnold_press/Arnold_press_d/'),
+                e : set_exercise(58,'Arnold_press_E_cam','./json/arnold_press/Arnold_press_e/'),
+                key : set_exercise(58,'Arnold_press_KEY_cam','./json/arnold_press/Arnold_press_key/')
+            }
+             $.each(arnold_press, (k,v)=>{
+                arnold_press[k];
+             })
+             set_poss([11,58],[21,45],30);
+             $('.loading').addClass('d-none');
+          }, 1000);
+
+    
+    
 })
 //시티드 숄더프레스
 $('#s_shoulder').click(()=>{
@@ -156,6 +163,7 @@ function set_exercise(file,name,url){
 
 //json 파일 데이터 요청 후 전역변수 배열에 데이터 push
 function json_reader(link) {
+    
     $.ajax({
         async: false, //동기처리 안하면 메모리 에러 뜸
         dataType : 'Json',
@@ -167,6 +175,7 @@ function json_reader(link) {
         console.log(a)
     })
 }
+
 
 
 /**

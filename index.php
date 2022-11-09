@@ -13,6 +13,25 @@
                 top: 50%;
                 left: 50%;
             } 
+            .loading{
+                position: absolute;
+                transform: translate(-50%, -50%);
+                top: 50%;
+                left: 50%;
+                width: 640px;
+                height: 480px;
+                color: #fff;
+                background: rgba(0, 0, 0, .5);
+                z-index: 5555;
+            }
+            .loading p {
+                display: flex;
+                align-items: center;
+                flex: 1;
+                place-content: center;
+                height: 100%;
+                margin-bottom: 0px;
+            }
         </style>
         <title>Title</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
@@ -31,8 +50,10 @@
                     <p>운동 부위 : <span class="e_point"></span></p>
                     <p>운동 설명 : <span class="e_desc"></span></p>
                     <div class="position-relative text-center">
+                        <article class="loading d-none"><p>로드중입니다.</p></article>
                         <video id="video" width="640" height="480" autoplay muted playsinline></video>
                         <canvas id="canvas"></canvas>
+                        
                     </div>
                     
                     
@@ -69,6 +90,7 @@
                 </article>
                 <button id="arnold">아놀드프레스</button>
                 <!-- <button id="s_shoulder">시티드 숄더프레스</button> -->
+
             </section>
         </main>
         <script src="Jquery.js"></script>
